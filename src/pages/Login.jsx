@@ -1,23 +1,22 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 
-const Register = () => {
-  const { signup } = useAuth();
+const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
 
   const [error, setError] = useState("");
 
-  const { name, email, password } = formData;
+  const { email, password } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,9 +25,9 @@ const Register = () => {
     e.preventDefault();
     setError("");
     try {
-      await signup({ name, email, password });
-      toast.success("User registered successfully");
-      navigate("/login");
+      await login({ email, password });
+      toast.success("Login successfully");
+      navigate("/dashboard");
     } catch (err) {
       setError(err);
       toast.error(error);
@@ -39,26 +38,12 @@ const Register = () => {
     <div className="flex items-center justify-center w-full min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white rounded shadow-md">
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-semibold">Register</h1>
+          <h1 className="text-3xl font-semibold">Login</h1>
           <p className="mt-2 text-gray-500">
-            Join us today by creating an account.
+            Welcome back! Please login to your account.
           </p>
         </div>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
-          <div>
-            <label htmlFor="name" className="block mb-1">
-              Name
-            </label>
-            <Input
-              id="name"
-              name="name"
-              value={name}
-              onChange={onChange}
-              placeholder="Enter your name"
-              type="text"
-              required
-            />
-          </div>
           <div>
             <label htmlFor="email" className="block mb-1">
               Email
@@ -85,15 +70,14 @@ const Register = () => {
               placeholder="Enter your password"
               type="password"
               required
-              minLength={6}
             />
           </div>
-          <Button type="submit">Register</Button>
+          <Button type="submit">Login</Button>
         </form>
         <p className="mt-4 text-center">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
-            Login
+          Don't have an account?{" "}
+          <Link to="/" className="text-blue-500 hover:underline">
+            Register
           </Link>
         </p>
       </div>
@@ -101,4 +85,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
